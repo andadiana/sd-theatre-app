@@ -11,5 +11,6 @@ public interface ShowRepository {
     public int create(ShowDTO show);
     public boolean update(ShowDTO show);
     public boolean delete(ShowDTO show);
+    public List<ShowDTO> searchByTitle(String title);
 
 }

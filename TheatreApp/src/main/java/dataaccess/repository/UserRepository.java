@@ -11,4 +11,5 @@ public interface UserRepository {
     public boolean update(UserDTO user);
     public boolean delete(UserDTO user);
     public UserDTO getByUsername(String username);
+    public List<UserDTO> getByUserType(String userType);
 }

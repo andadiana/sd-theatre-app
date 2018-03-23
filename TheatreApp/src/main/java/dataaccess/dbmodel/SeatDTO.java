@@ -29,4 +29,8 @@ public class SeatDTO {
     public void setSeatNr(int seatNr) {
         this.seatNr = seatNr;
     }
+
+    public String toString() {
+        return id + " " + rowNr + " " + seatNr;
+    }
 }

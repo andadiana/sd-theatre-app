@@ -5,7 +5,21 @@ public class TicketDTO {
     private int id;
     private int seatId;
     private int showId;
-    private Boolean reserved;
+    private boolean reserved;
+
+    public TicketDTO() {
+        this.id = 0;
+        this.seatId = 0;
+        this.showId = 0;
+        this.reserved = false;
+    }
+
+    public TicketDTO(int id, int seatId, int showId, boolean reserved) {
+        this.id = id;
+        this.showId = showId;
+        this.seatId = seatId;
+        this.reserved = reserved;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -23,7 +37,7 @@ public class TicketDTO {
         return showId;
     }
 
-    public Boolean getReserved() {
+    public boolean getReserved() {
         return reserved;
     }
 
@@ -37,6 +51,10 @@ public class TicketDTO {
 
     public void setShowId(int showId) {
         this.showId = showId;
+    }
+
+    public String toString() {
+        return id + " " + seatId + " " + showId + " " + reserved;
     }
 
 }

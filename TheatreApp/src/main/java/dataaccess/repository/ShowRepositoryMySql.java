@@ -18,7 +18,7 @@ public class ShowRepositoryMySql implements ShowRepository {
 
     public List<ShowDTO> findAll() {
         Connection connection = dbConnection.getConnection();
-        List<ShowDTO> shows = new ArrayList<ShowDTO>();
+        List<ShowDTO> shows = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
             String query = "SELECT * FROM `show`";
@@ -118,6 +118,25 @@ public class ShowRepositoryMySql implements ShowRepository {
             return false;
         }
         return true;
+    }
+
+    public List<ShowDTO> searchByTitle(String title) {
+        Connection connection = dbConnection.getConnection();
+        List<ShowDTO> shows = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM `show` WHERE title LIKE %?%";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, title);
+            System.out.println(statement);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                shows.add(getShowFromResultSet(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return shows;
     }
 
     private ShowDTO getShowFromResultSet(ResultSet rs) throws SQLException {

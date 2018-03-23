@@ -10,15 +10,23 @@ public class ShowDTO {
     private Timestamp date;
     private int nrTickets;
 
-    /*
-    public ShowDTO(long id, String title, String genre, String cast, Timestamp date, int nrTickets) {
+    public ShowDTO() {
+        this.id = 0;
+        this.title = null;
+        this.genre = null;
+        this.cast = null;
+        this.date = null;
+        this.nrTickets = 0;
+    }
+
+    public ShowDTO(String title, String genre, String cast, Timestamp date, int nrTickets) {
         this.id = id;
         this.title = title;
         this.genre = genre;
         this.cast = cast;
         this.date = date;
         this.nrTickets = nrTickets;
-    }*/
+    }
 
     public void setId(int id) {
         this.id = id;

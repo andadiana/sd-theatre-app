@@ -1,11 +1,14 @@
 package dataaccess.repository;
 
 import dataaccess.DBConnection;
+import dataaccess.dbmodel.SeatDTO;
+import dataaccess.dbmodel.TicketDTO;
 import dataaccess.dbmodel.UserDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 public class UserRepositoryMySql implements UserRepository {
 
@@ -136,6 +139,26 @@ public class UserRepositoryMySql implements UserRepository {
         return user;
     }
 
+    public List<UserDTO> getByUserType(String userType) {
+        Connection connection = dbConnection.getConnection();
+        List<UserDTO> users = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM user WHERE user_type= ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, userType);
+            System.out.println(statement);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()) {
+                users.add(getUserFromResultSet(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
     private UserDTO getUserFromResultSet(ResultSet rs) throws SQLException {
         UserDTO user = new UserDTO();
         user.setId(rs.getInt("user_id"));
@@ -144,4 +167,5 @@ public class UserRepositoryMySql implements UserRepository {
         user.setUserType(rs.getString("user_type"));
         return user;
     }
+    
 }
