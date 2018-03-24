@@ -10,14 +10,8 @@ import java.util.List;
 public class SeatRepositoryMySql implements SeatRepository {
 
 
-    private DBConnection dbConnection;
-
-    public SeatRepositoryMySql(DBConnection dbConnection) {
-        this.dbConnection = dbConnection;
-    }
-
     public List<SeatDTO> findAll() {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         List<SeatDTO> seats = new ArrayList<SeatDTO>();
         try {
             Statement statement = connection.createStatement();
@@ -34,7 +28,7 @@ public class SeatRepositoryMySql implements SeatRepository {
     }
 
     public SeatDTO getById(int id) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         SeatDTO seat = null;
         try {
             String query = "SELECT * FROM seat WHERE seat_id = ?";
@@ -54,8 +48,30 @@ public class SeatRepositoryMySql implements SeatRepository {
         return seat;
     }
 
+    public SeatDTO getByPosition(int rowNr, int seatNr) {
+        Connection connection = DBConnection.getConnection();
+        SeatDTO seat = null;
+        try {
+            String query = "SELECT * FROM seat WHERE seat_nr = ? AND row_nr = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, seatNr);
+            statement.setInt(2, rowNr);
+            System.out.println(statement);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next())
+                seat = getSeatFromResultSet(rs);
+            else {
+                System.out.println("No results");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return seat;
+    }
+
     public int create(SeatDTO seat) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "INSERT INTO seat (row_nr, seat_nr) " +
                     "VALUES (?, ?)";
@@ -79,7 +95,7 @@ public class SeatRepositoryMySql implements SeatRepository {
     }
 
     public boolean update(SeatDTO seat) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "UPDATE seat SET row_nr=?, seat_nr=? " +
                     "WHERE seat_id=?";
@@ -98,7 +114,7 @@ public class SeatRepositoryMySql implements SeatRepository {
     }
 
     public boolean delete(SeatDTO seat) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "DELETE FROM seat WHERE seat_id=?";
             PreparedStatement statement = connection.prepareStatement(query);

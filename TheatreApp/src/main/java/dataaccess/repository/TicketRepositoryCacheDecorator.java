@@ -3,6 +3,7 @@ package dataaccess.repository;
 import dataaccess.dbmodel.TicketDTO;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TicketRepositoryCacheDecorator implements TicketRepository {
 
@@ -28,6 +29,13 @@ public class TicketRepositoryCacheDecorator implements TicketRepository {
             return ticketCache.load().stream().filter(x -> x.getId() == id).findFirst().get();
         }
         return ticketRepository.getById(id);
+    }
+
+    public List<TicketDTO> getByShowId(int showId) {
+        if (!ticketCache.isEmpty()) {
+            return ticketCache.load().stream().filter(x -> x.getShowId() == showId).collect(Collectors.toList());
+        }
+        return ticketRepository.getByShowId(showId);
     }
 
     public int create(TicketDTO ticket) {

@@ -10,14 +10,9 @@ import java.util.UUID;
 
 public class ShowRepositoryMySql implements ShowRepository {
 
-    private final DBConnection dbConnection;
-
-    public ShowRepositoryMySql(DBConnection dbConnection) {
-        this.dbConnection = dbConnection;
-    }
 
     public List<ShowDTO> findAll() {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         List<ShowDTO> shows = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
@@ -34,7 +29,7 @@ public class ShowRepositoryMySql implements ShowRepository {
     }
 
     public ShowDTO getById(int id) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         ShowDTO show = null;
         try {
             String query = "SELECT * FROM `show` WHERE show_id = ?";
@@ -56,7 +51,7 @@ public class ShowRepositoryMySql implements ShowRepository {
 
 
     public int create(ShowDTO show) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "INSERT INTO `show` (title, genre, cast, date, nr_tickets) " +
                     "VALUES (?, ?, ?, ? ,?)";
@@ -82,7 +77,7 @@ public class ShowRepositoryMySql implements ShowRepository {
     }
 
     public boolean update(ShowDTO show) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "UPDATE `show` SET title=?, genre=?, cast=?, date=?, nr_tickets=? " +
                     "WHERE show_id=?";
@@ -105,7 +100,7 @@ public class ShowRepositoryMySql implements ShowRepository {
     }
 
     public boolean delete(ShowDTO show) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "DELETE FROM `show` WHERE show_id=?";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -121,7 +116,7 @@ public class ShowRepositoryMySql implements ShowRepository {
     }
 
     public List<ShowDTO> searchByTitle(String title) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         List<ShowDTO> shows = new ArrayList<>();
         try {
             String query = "SELECT * FROM `show` WHERE title LIKE %?%";
@@ -147,6 +142,7 @@ public class ShowRepositoryMySql implements ShowRepository {
         show.setDate(rs.getTimestamp("date"));
         show.setCast(rs.getString("cast"));
         show.setNrTickets(rs.getInt("nr_tickets"));
+        //System.out.println("show: " + show);
         return show;
     }
 

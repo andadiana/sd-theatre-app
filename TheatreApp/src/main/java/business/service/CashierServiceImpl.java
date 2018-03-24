@@ -1,8 +1,11 @@
 package business.service;
 
 import business.model.User;
+import business.util.PasswordEncrypter;
+import business.util.PasswordEncrypterMD5;
 import dataaccess.dbmodel.UserDTO;
 import dataaccess.repository.UserRepository;
+import dataaccess.repository.UserRepositoryMySql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +14,9 @@ public class CashierServiceImpl implements CashierService {
 
     private UserRepository repository;
 
-    public CashierServiceImpl(UserRepository repository) {
-        this.repository = repository;
+    public CashierServiceImpl() {
+
+        this.repository = new UserRepositoryMySql();
     }
 
     public List<User> findallCashiers() {
@@ -30,11 +34,15 @@ public class CashierServiceImpl implements CashierService {
     }
 
     public int createCashier(User user) {
+        String encryptedPass = encryptPassword(user.getPassword());
+        user.setPassword(encryptedPass);
         UserDTO userDTO = userToDTO(user);
         return repository.create(userDTO);
     }
 
     public boolean updateCashier(User user) {
+        String encryptedPass = encryptPassword(user.getPassword());
+        user.setPassword(encryptedPass);
         UserDTO userDTO = userToDTO(user);
         return repository.update(userDTO);
     }
@@ -64,11 +72,20 @@ public class CashierServiceImpl implements CashierService {
         userDTO.setUsername(user.getUsername());
         userDTO.setPassword(user.getPassword());
         switch (user.getUserType()) {
-            case Admin: userDTO.setUserType("ADMIN");
-            break;
-            case Cashier: userDTO.setUserType("CASHIER");
-            break;
+            case Admin: {
+                userDTO.setUserType("ADMIN");
+                break;
+            }
+            case Cashier: {
+                userDTO.setUserType("CASHIER");
+                break;
+            }
         }
         return userDTO;
+    }
+
+    private String encryptPassword(String givenPass) {
+        PasswordEncrypter encrypter = new PasswordEncrypterMD5();
+        return encrypter.encrypt(givenPass);
     }
 }

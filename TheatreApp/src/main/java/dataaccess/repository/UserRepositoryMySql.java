@@ -12,14 +12,8 @@ import java.util.function.UnaryOperator;
 
 public class UserRepositoryMySql implements UserRepository {
 
-    private final DBConnection dbConnection;
-
-    public UserRepositoryMySql(DBConnection dbConnection) {
-        this.dbConnection = dbConnection;
-    }
-
     public List<UserDTO> findAll() {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         List<UserDTO> users = new ArrayList<UserDTO>();
         try {
             Statement statement = connection.createStatement();
@@ -36,7 +30,7 @@ public class UserRepositoryMySql implements UserRepository {
     }
 
     public UserDTO getById(int id) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         UserDTO user = null;
         try {
             String query = "SELECT * FROM user WHERE user_id = ?";
@@ -57,7 +51,7 @@ public class UserRepositoryMySql implements UserRepository {
     }
 
     public int create(UserDTO user) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "INSERT INTO user (username, password, user_type) " +
                     "VALUES (?, ?, ?)";
@@ -82,7 +76,7 @@ public class UserRepositoryMySql implements UserRepository {
     }
 
     public boolean update(UserDTO user) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "UPDATE user SET username=?, password=?, user_type=? " +
                     "WHERE user_id=?";
@@ -103,7 +97,7 @@ public class UserRepositoryMySql implements UserRepository {
     }
 
     public boolean delete(UserDTO user) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "DELETE FROM user WHERE user_id=?";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -119,7 +113,7 @@ public class UserRepositoryMySql implements UserRepository {
     }
 
     public UserDTO getByUsername(String username) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         UserDTO user = null;
         try {
             String query = "SELECT * FROM user WHERE username= ?";
@@ -129,9 +123,6 @@ public class UserRepositoryMySql implements UserRepository {
             ResultSet rs = statement.executeQuery();
             if (rs.next())
                 user = getUserFromResultSet(rs);
-            else {
-                System.out.println("No results");
-            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -140,7 +131,7 @@ public class UserRepositoryMySql implements UserRepository {
     }
 
     public List<UserDTO> getByUserType(String userType) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         List<UserDTO> users = new ArrayList<>();
         try {
             String query = "SELECT * FROM user WHERE user_type= ?";
@@ -167,5 +158,5 @@ public class UserRepositoryMySql implements UserRepository {
         user.setUserType(rs.getString("user_type"));
         return user;
     }
-    
+
 }

@@ -8,6 +8,7 @@ public interface SeatRepository {
 
     public List<SeatDTO> findAll();
     public SeatDTO getById(int id);
+    public SeatDTO getByPosition(int rowNr, int seatNr);
     public int create(SeatDTO seat);
     public boolean update(SeatDTO seat);
     public boolean delete(SeatDTO seat);

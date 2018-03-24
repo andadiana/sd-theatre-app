@@ -9,14 +9,9 @@ import java.util.List;
 
 public class TicketRepositoryMySql implements TicketRepository{
 
-    private final DBConnection dbConnection;
-
-    public TicketRepositoryMySql(DBConnection dbConnection) {
-        this.dbConnection = dbConnection;
-    }
 
     public List<TicketDTO> findAll() {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         List<TicketDTO> tickets = new ArrayList<TicketDTO>();
         try {
             Statement statement = connection.createStatement();
@@ -33,7 +28,7 @@ public class TicketRepositoryMySql implements TicketRepository{
     }
 
     public TicketDTO getById(int id) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         TicketDTO ticket = null;
         try {
             String query = "SELECT * FROM ticket WHERE ticket_id = ?";
@@ -53,8 +48,27 @@ public class TicketRepositoryMySql implements TicketRepository{
         return ticket;
     }
 
+    public List<TicketDTO> getByShowId(int showId) {
+        Connection connection = DBConnection.getConnection();
+        List<TicketDTO> tickets = new ArrayList<TicketDTO>();
+        try {
+            String query = "SELECT * FROM ticket WHERE show_id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, showId);
+            System.out.println(statement);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()) {
+                tickets.add(getTicketFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tickets;
+    }
+
     public int create(TicketDTO ticket) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "INSERT INTO ticket (seat_id, show_id, reserved) " +
                     "VALUES (?, ?, ?)";
@@ -80,7 +94,7 @@ public class TicketRepositoryMySql implements TicketRepository{
     }
 
     public boolean update(TicketDTO ticket) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "UPDATE ticket SET seat_id=?, show_id=?, reserved=? " +
                     "WHERE ticket_id=?";
@@ -101,7 +115,7 @@ public class TicketRepositoryMySql implements TicketRepository{
     }
 
     public boolean delete(TicketDTO ticket) {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = DBConnection.getConnection();
         try {
             String query = "DELETE FROM ticket WHERE ticket_id=?";
             PreparedStatement statement = connection.prepareStatement(query);

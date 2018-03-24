@@ -63,4 +63,8 @@ public class Show {
     public String getTitle() {
         return title;
     }
+
+    public String toString() {
+        return title + " " + genre + " " + date;
+    }
 }

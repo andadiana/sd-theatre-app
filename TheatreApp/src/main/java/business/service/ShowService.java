@@ -2,6 +2,7 @@ package business.service;
 
 import business.model.Show;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface ShowService {
@@ -12,4 +13,5 @@ public interface ShowService {
     public boolean update(Show show);
     public boolean delete(Show show);
     public List<Show> searchByTitle(String title);
+    public List<Show> getAllAvailable(Timestamp timestamp);
 }
