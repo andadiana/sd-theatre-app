@@ -73,6 +73,23 @@ public class TicketServiceImpl implements TicketService {
         return repository.update(ticketDTO);
     }
 
+    public List<Ticket> findSoldTicketsForShow(Show show) {
+        List<TicketDTO> ticketDTOS = repository.findSoldTicketsForShow(show.getId());
+        List<Ticket> tickets = new ArrayList<>();
+        for (TicketDTO ticket: ticketDTOS) {
+            tickets.add(dtoToTicket(ticket));
+        }
+        return tickets;
+    }
+
+    public boolean nrTicketsExceeded(Show show) {
+        List<TicketDTO> soldTickets = repository.findSoldTicketsForShow(show.getId());
+        if (soldTickets.size() >= show.getNrTickets()) {
+            return true;
+        }
+        return false;
+    }
+
     private Ticket dtoToTicket(TicketDTO ticketDTO) {
         Ticket ticket = new Ticket();
         ticket.setId(ticketDTO.getId());

@@ -28,9 +28,10 @@ public class CashierView extends Scene {
 
         //TODO add button to log out and go back to login view
 
-        //TODO add notification for when all tickets have been reserved
         ShowService showService = new ShowServiceImpl();
         ticketService = new TicketServiceImpl();
+
+        Show selectedShow = null;
 
         tickets = new Ticket[SeatService.THEATRE_ROWS + 1][SeatService.THEATRE_COLS + 1];
         ticketLabels = new Label[SeatService.THEATRE_ROWS + 1][SeatService.THEATRE_COLS + 1];
@@ -68,21 +69,31 @@ public class CashierView extends Scene {
         List<Show> availableShows = showService.getAllAvailable(new Timestamp(System.currentTimeMillis()));
         ObservableList<Show> showOptions =
                 FXCollections.observableArrayList(availableShows);
+
         showBox = new ComboBox<>(showOptions);
         showBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 seatGrid.getChildren().clear();
 
-                Show show = showBox.getSelectionModel().getSelectedItem();
-                titleField.setText(show.getTitle());
-                genreField.setText(show.getGenre().toString());
-                dateField.setText(show.getDate().toString());
-                castField.setText(show.getCast());
+                Show selectedShow = showBox.getSelectionModel().getSelectedItem();
+                titleField.setText(selectedShow.getTitle());
+                genreField.setText(selectedShow.getGenre().toString());
+                dateField.setText(selectedShow.getDate().toString());
+                castField.setText(selectedShow.getCast());
+                rowField.clear();
+                seatField.clear();
+
+                if (ticketService.nrTicketsExceeded(selectedShow)) {
+                    ticketError.setText("Number of tickets exceeded!");
+                }
+                else {
+                    ticketError.setText("");
+                }
 
                 for (int i = 1; i <= SeatService.THEATRE_ROWS; i++) {
                     for (int j = 1; j <= SeatService.THEATRE_COLS; j++) {
-                        Ticket ticket = ticketService.findSeatTicketForShow(show, i, j);
+                        Ticket ticket = ticketService.findSeatTicketForShow(selectedShow, i, j);
                         tickets[i][j] = ticket;
 
                         Label ticketLabel = new Label(ticket.toString());
@@ -108,7 +119,6 @@ public class CashierView extends Scene {
             }
         });
 
-
         Button reserveButton = new Button("Reserve");
         reserveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -117,11 +127,20 @@ public class CashierView extends Scene {
                     int rowNr = Integer.parseInt(rowField.getText());
                     int seatNr = Integer.parseInt(seatField.getText());
                     Ticket reservedTicket = tickets[rowNr][seatNr];
-                    reservedTicket.setReserved(true);
-                    Label ticketLabel = ticketLabels[rowNr][seatNr];
-                    ticketLabel.setStyle("-fx-background-color: #fe5858;");
-                    ticketService.reserveTicket(reservedTicket);
-                    ticketError.setText("");
+                    if (reservedTicket.isReserved()) {
+                        ticketError.setText("Ticket is already reserved!");
+                    }
+                    else {
+                        reservedTicket.setReserved(true);
+                        Label ticketLabel = ticketLabels[rowNr][seatNr];
+                        ticketLabel.setStyle("-fx-background-color: #fe5858;");
+                        ticketService.reserveTicket(reservedTicket);
+                        if (selectedShow != null && ticketService.nrTicketsExceeded(selectedShow)) {
+                            ticketError.setText("Number of tickets exceeded!");
+                        } else {
+                            ticketError.setText("");
+                        }
+                    }
                 }
                 else {
                     ticketError.setText("Please select seat!");
@@ -233,9 +252,15 @@ public class CashierView extends Scene {
     }
 
     private boolean validSeatInput(String rowNr, String seatNr) {
-        //TODO check that input strings are in fact integers
-        int row = Integer.parseInt(rowNr);
-        int seat = Integer.parseInt(seatNr);
+        int row;
+        int seat;
+        try {
+            row = Integer.parseInt(rowNr);
+            seat = Integer.parseInt(seatNr);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
         if (row > 0 && row <= SeatService.THEATRE_ROWS && seat > 0 && seat <= SeatService.THEATRE_COLS) {
             return true;
         }

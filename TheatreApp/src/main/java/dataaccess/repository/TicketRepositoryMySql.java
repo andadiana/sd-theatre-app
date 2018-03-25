@@ -152,6 +152,25 @@ public class TicketRepositoryMySql implements TicketRepository{
         return ticket;
     }
 
+    public List<TicketDTO> findSoldTicketsForShow(int showId) {
+        Connection connection = DBConnection.getConnection();
+        List<TicketDTO> tickets = new ArrayList<TicketDTO>();
+        try {
+            String query = "SELECT * FROM ticket WHERE show_id = ? AND reserved = 1";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, showId);
+            System.out.println(statement);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()) {
+                tickets.add(getTicketFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tickets;
+    }
+
     private TicketDTO getTicketFromResultSet(ResultSet rs) throws SQLException {
         TicketDTO ticket = new TicketDTO();
         ticket.setId(rs.getInt("ticket_id"));
