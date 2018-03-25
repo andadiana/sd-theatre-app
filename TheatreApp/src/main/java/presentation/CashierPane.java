@@ -3,6 +3,7 @@ package presentation;
 import business.model.User;
 import business.service.CashierService;
 import business.service.CashierServiceImpl;
+import dataaccess.repository.UserRepositoryMySql;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,7 +33,7 @@ public class CashierPane {
 
     public CashierPane() {
         pane = new BorderPane();
-        cashierService = new CashierServiceImpl();
+        cashierService = new CashierServiceImpl(new UserRepositoryMySql());
 
         createCashierTable();
 

@@ -14,9 +14,9 @@ public class CashierServiceImpl implements CashierService {
 
     private UserRepository repository;
 
-    public CashierServiceImpl() {
+    public CashierServiceImpl(UserRepository userRepository) {
 
-        this.repository = new UserRepositoryMySql();
+        this.repository = userRepository;
     }
 
     public List<User> findallCashiers() {

@@ -5,6 +5,8 @@ import business.service.CashierService;
 import business.service.CashierServiceImpl;
 import business.service.ShowService;
 import business.service.ShowServiceImpl;
+import dataaccess.repository.ShowRepositoryMySql;
+import dataaccess.repository.UserRepositoryMySql;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -19,8 +21,8 @@ public class AdminView extends Scene {
 
         //TODO: add button to go back to login view
 
-        ShowService showService = new ShowServiceImpl();
-        CashierService cashierService = new CashierServiceImpl();
+        ShowService showService = new ShowServiceImpl(new ShowRepositoryMySql());
+        CashierService cashierService = new CashierServiceImpl(new UserRepositoryMySql());
 
         Label label = new Label("ADMIN VIEW");
         pane.setTop(label);

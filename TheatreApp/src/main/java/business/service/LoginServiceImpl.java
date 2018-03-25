@@ -11,8 +11,8 @@ public class LoginServiceImpl implements LoginService {
 
     UserRepository repository;
 
-    public LoginServiceImpl() {
-        this.repository = new UserRepositoryMySql();
+    public LoginServiceImpl(UserRepository userRepository) {
+        this.repository = userRepository;
     }
 
     public UserType logIn(String username, String password) throws Exception{

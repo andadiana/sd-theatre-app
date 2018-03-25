@@ -14,8 +14,8 @@ public class ShowServiceImpl implements ShowService {
 
     private ShowRepository repository;
 
-    public ShowServiceImpl() {
-        this.repository = new ShowRepositoryMySql();
+    public ShowServiceImpl(ShowRepository showRepository) {
+        this.repository = showRepository;
     }
 
     public List<Show> findAll() {
@@ -35,7 +35,7 @@ public class ShowServiceImpl implements ShowService {
     public int create(Show show) {
         ShowDTO showDTO = showToDto(show);
         int showId = repository.create(showDTO);
-        TicketService ticketService = new TicketServiceImpl();
+        TicketService ticketService = new TicketServiceImpl(new TicketRepositoryCacheDecorator(new TicketRepositoryMySql()));
         ticketService.createTicketsForShow(show);
         return showId;
     }

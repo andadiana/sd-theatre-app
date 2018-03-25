@@ -12,8 +12,8 @@ public class SeatServiceImpl implements SeatService {
 
     private SeatRepository repository;
 
-    public SeatServiceImpl() {
-        this.repository = new SeatRepositoryMySql();
+    public SeatServiceImpl(SeatRepository seatRepository) {
+        this.repository = seatRepository;
     }
 
     public List<Seat> findAll() {

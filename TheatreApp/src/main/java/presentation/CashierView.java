@@ -4,6 +4,10 @@ import business.model.Seat;
 import business.model.Show;
 import business.model.Ticket;
 import business.service.*;
+import dataaccess.repository.SeatRepositoryMySql;
+import dataaccess.repository.ShowRepositoryMySql;
+import dataaccess.repository.TicketRepositoryCacheDecorator;
+import dataaccess.repository.TicketRepositoryMySql;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,8 +32,8 @@ public class CashierView extends Scene {
 
         //TODO add button to log out and go back to login view
 
-        ShowService showService = new ShowServiceImpl();
-        ticketService = new TicketServiceImpl();
+        ShowService showService = new ShowServiceImpl(new ShowRepositoryMySql());
+        ticketService = new TicketServiceImpl(new TicketRepositoryCacheDecorator(new TicketRepositoryMySql()));
 
         Show selectedShow = null;
 
@@ -222,7 +226,7 @@ public class CashierView extends Scene {
                 if (validSeatInput(editRowField.getText(), editSeatField.getText())) {
                     int rowNr = Integer.parseInt(editRowField.getText());
                     int seatNr = Integer.parseInt(editSeatField.getText());
-                    SeatService seatService = new SeatServiceImpl();
+                    SeatService seatService = new SeatServiceImpl(new SeatRepositoryMySql());
                     Seat newSeat = seatService.getByPosition(rowNr, seatNr);
                     Seat oldSeat = ticket.getSeat();
 

@@ -3,6 +3,7 @@ package presentation;
 import business.model.Show;
 import business.service.ShowService;
 import business.service.ShowServiceImpl;
+import dataaccess.repository.ShowRepositoryMySql;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -45,7 +46,7 @@ public class ShowPane{
         //TODO: implement search bar for shows (search by name)
 
         pane = new BorderPane();
-        showService = new ShowServiceImpl();
+        showService = new ShowServiceImpl(new ShowRepositoryMySql());
 
         createShowTable();
 
