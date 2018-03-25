@@ -30,8 +30,6 @@ public class CashierView extends Scene {
     public CashierView(BorderPane pane) {
         super(pane, 1000, 600);
 
-        //TODO add button to log out and go back to login view
-
         ShowService showService = new ShowServiceImpl(new ShowRepositoryMySql());
         ticketService = new TicketServiceImpl(new TicketRepositoryCacheDecorator(new TicketRepositoryMySql()));
 
@@ -199,10 +197,22 @@ public class CashierView extends Scene {
             }
         });
 
+        Button logout = new Button("Log out");
+        logout.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                LoginView loginView = new LoginView(new BorderPane());
+                TheatreApp.getPrimaryStage().setScene(loginView);
+            }
+        });
+
+
         VBox vBox = new VBox();
         vBox.getChildren().addAll(showBox, titleField, genreField, dateField,
                 castField, seatGrid, rowField, seatField, ticketError, reserveButton, cancelReservation, editSeat);
         pane.setCenter(vBox);
+
+        pane.setBottom(logout);
     }
 
     private void editSeatScene(Ticket ticket) {

@@ -19,8 +19,6 @@ public class AdminView extends Scene {
     public AdminView(BorderPane pane) {
         super(pane, 1000, 600);
 
-        //TODO: add button to go back to login view
-
         ShowService showService = new ShowServiceImpl(new ShowRepositoryMySql());
         CashierService cashierService = new CashierServiceImpl(new UserRepositoryMySql());
 
@@ -59,11 +57,22 @@ public class AdminView extends Scene {
             }
         });
 
+        Button logout = new Button("Log out");
+        logout.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                LoginView loginView = new LoginView(new BorderPane());
+                TheatreApp.getPrimaryStage().setScene(loginView);
+            }
+        });
+
         selectionBox.getChildren().addAll(showsSel, cashiersSel, exportSel);
         pane.setLeft(selectionBox);
 
         BorderPane centerPane = new BorderPane();
         pane.setCenter(centerPane);
+
+        pane.setBottom(logout);
 
     }
 }

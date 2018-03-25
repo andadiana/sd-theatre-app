@@ -51,7 +51,6 @@ public class LoginView extends Scene {
                 }
             });
 
-
         VBox vBox = new VBox();
         vBox.getChildren().addAll(username, password, errorMessage, loginButton);
         vBox.setSpacing(10);
