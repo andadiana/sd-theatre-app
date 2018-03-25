@@ -73,8 +73,8 @@ public class CashierView extends Scene {
         List<Show> availableShows = showService.getAllAvailable(new Timestamp(System.currentTimeMillis()));
         ObservableList<Show> showOptions =
                 FXCollections.observableArrayList(availableShows);
-
         showBox = new ComboBox<>(showOptions);
+
         showBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {

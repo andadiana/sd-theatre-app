@@ -50,6 +50,14 @@ public class AdminView extends Scene {
         });
 
         Button exportSel = new Button("Export");
+        exportSel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println("Setting up the export view");
+                ExportPane exportPane = new ExportPane();
+                pane.setCenter(exportPane.getPane());
+            }
+        });
 
         selectionBox.getChildren().addAll(showsSel, cashiersSel, exportSel);
         pane.setLeft(selectionBox);
