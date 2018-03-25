@@ -29,4 +29,8 @@ public class Seat {
     public void setRowNr(int rowNr) {
         this.rowNr = rowNr;
     }
+
+    public String toString() {
+        return "row " + rowNr + " seat " + seatNr;
+    }
 }

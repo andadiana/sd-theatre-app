@@ -24,6 +24,6 @@ public class Cache<T> {
     }
 
     public void restoreCache() {
-        storage = null;
+        storage.clear();
     }
 }

@@ -12,4 +12,7 @@ public interface TicketService {
     public List<Ticket> findAllTicketsForShow(Show show);
     public boolean editSeat(Ticket ticket, Seat newSeat);
     public boolean cancelReservation(Ticket ticket);
+    public Ticket findSeatTicketForShow(Show show, int rowNr, int seatNr);
+    public boolean reserveTicket(Ticket ticket);
+    //TODO get all sold tickets for show
 }

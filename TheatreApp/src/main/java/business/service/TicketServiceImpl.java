@@ -43,13 +43,18 @@ public class TicketServiceImpl implements TicketService {
         return tickets;
     }
 
+    public Ticket findSeatTicketForShow(Show show, int rowNr, int seatNr) {
+        SeatService seatService = new SeatServiceImpl();
+        Seat seat = seatService.getByPosition(rowNr, seatNr);
+        TicketDTO ticketDTO = repository.findSeatTicketForShow(show.getId(), seat.getId());
+        return dtoToTicket(ticketDTO);
+    }
+
     public boolean editSeat(Ticket ticket, Seat newSeat) {
         Show show = ticket.getShow();
         ticket.setReserved(false);
-        Ticket newTicket = new Ticket();
-        newTicket.setShow(show);
+        Ticket newTicket = findSeatTicketForShow(show, newSeat.getRowNr(), newSeat.getSeatNr());
         newTicket.setReserved(true);
-        newTicket.setSeat(newSeat);
         TicketDTO newTicketDTO = ticketToDTO(newTicket);
         TicketDTO ticketDTO = ticketToDTO(ticket);
         repository.update(ticketDTO);
@@ -59,6 +64,12 @@ public class TicketServiceImpl implements TicketService {
     public boolean cancelReservation(Ticket ticket) {
         TicketDTO ticketDTO = ticketToDTO(ticket);
         ticketDTO.setReserved(false);
+        return repository.update(ticketDTO);
+    }
+
+    public boolean reserveTicket(Ticket ticket) {
+        ticket.setReserved(true);
+        TicketDTO ticketDTO = ticketToDTO(ticket);
         return repository.update(ticketDTO);
     }
 

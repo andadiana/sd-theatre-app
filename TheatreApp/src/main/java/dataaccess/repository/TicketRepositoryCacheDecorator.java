@@ -31,6 +31,13 @@ public class TicketRepositoryCacheDecorator implements TicketRepository {
         return ticketRepository.getById(id);
     }
 
+    public TicketDTO findSeatTicketForShow(int showId, int seatId) {
+        if (!ticketCache.isEmpty()) {
+            return ticketCache.load().stream().filter(x -> (x.getShowId() == showId && x.getSeatId() == seatId)).findFirst().get();
+        }
+        return ticketRepository.findSeatTicketForShow(showId, seatId);
+    }
+
     public List<TicketDTO> getByShowId(int showId) {
         if (!ticketCache.isEmpty()) {
             return ticketCache.load().stream().filter(x -> x.getShowId() == showId).collect(Collectors.toList());

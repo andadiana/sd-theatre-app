@@ -38,4 +38,8 @@ public class Ticket {
     public boolean isReserved() {
         return reserved;
     }
+
+    public String toString() {
+        return seat.toString();
+    }
 }
