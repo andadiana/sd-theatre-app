@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<show id="13">
+    <date>2018-04-01 20:30:00.0</date>
+    <tickets>
+        <ticket id="2">
+            <row>1</row>
+            <seat>1</seat>
+        </ticket>
+        <ticket id="8">
+            <row>1</row>
+            <seat>3</seat>
+        </ticket>
+        <ticket id="11">
+            <row>1</row>
+            <seat>4</seat>
+        </ticket>
+        <ticket id="35">
+            <row>2</row>
+            <seat>2</seat>
+        </ticket>
+        <ticket id="98">
+            <row>4</row>
+            <seat>3</seat>
+        </ticket>
+        <ticket id="191">
+            <row>7</row>
+            <seat>4</seat>
+        </ticket>
+        <ticket id="194">
+            <row>7</row>
+            <seat>5</seat>
+        </ticket>
+    </tickets>
+</show>
