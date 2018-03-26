@@ -22,6 +22,7 @@ import java.util.Date;
 
 public class ShowPane{
 
+    private final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss.S";
     private BorderPane pane;
     private ShowService showService;
 
@@ -95,15 +96,20 @@ public class ShowPane{
                         show.setGenre(genreBox.getSelectionModel().getSelectedItem());
                         show.setNrTickets(Integer.parseInt(nrTicketsField.getText()));
                         Timestamp date = stringToTimestamp(dateField.getText());
-                        show.setDate(date);
+                        if (date == null) {
+                            showError.setText("Invalid format for date! Correct format is: yyyy-MM-dd hh:mm");
+                        }
+                        else {
+                            show.setDate(date);
 
-                        System.out.println("Updating" + show);
-                        if (showService.update(show)) {
-                            System.out.println("Successful update for show");
-                            populateShowTable();
-                            showError.setText("");
-                        } else {
-                            showError.setText("Unsuccessful update operation");
+                            System.out.println("Updating" + show);
+                            if (showService.update(show)) {
+                                System.out.println("Successful update for show");
+                                populateShowTable();
+                                showError.setText("");
+                            } else {
+                                showError.setText("Unsuccessful update operation");
+                            }
                         }
                     }
                 }
@@ -192,12 +198,11 @@ public class ShowPane{
 
     private Timestamp stringToTimestamp(String s){
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
             Date parsedDate = dateFormat.parse(s);
             System.out.println("parsed date: " + parsedDate);
             return new java.sql.Timestamp(parsedDate.getTime());
         } catch(Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -223,8 +228,10 @@ public class ShowPane{
             errorLabel.setText("Number of tickets field cannot be empty!");
             return false;
         }
-        //TODO: check date format
-        //TODO: check if nr of tickets is integer
+        if (!nrTickets.matches("-?\\d+")) {
+            errorLabel.setText("Number of tickets must be an integer!");
+            return false;
+        }
         return true;
     }
 
@@ -267,18 +274,22 @@ public class ShowPane{
                     show.setNrTickets(Integer.parseInt(addNrTickets.getText()));
                     String dateString = addDate.getText() + ":00.0";
                     Timestamp date = stringToTimestamp(dateString);
-                    show.setDate(date);
-
-                    System.out.println("Inserting " + show);
-                    int res = showService.create(show);
-                    if (res != 0) {
-                        System.out.println("Successful create for show");
-                        populateShowTable();
-                        addError.setText("");
-                        stage.close();
+                    if (date == null) {
+                        addError.setText("Invalid format for date! Correct format is: yyyy-MM-dd hh:mm");
                     }
                     else {
-                        addError.setText("Unsuccessful add operation");
+                        show.setDate(date);
+
+                        System.out.println("Inserting " + show);
+                        int res = showService.create(show);
+                        if (res != 0) {
+                            System.out.println("Successful create for show");
+                            populateShowTable();
+                            addError.setText("");
+                            stage.close();
+                        } else {
+                            addError.setText("Unsuccessful add operation");
+                        }
                     }
                 }
             }
