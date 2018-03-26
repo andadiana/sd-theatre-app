@@ -5,7 +5,6 @@ import business.util.PasswordEncrypter;
 import business.util.PasswordEncrypterMD5;
 import dataaccess.dbmodel.UserDTO;
 import dataaccess.repository.UserRepository;
-import dataaccess.repository.UserRepositoryMySql;
 
 import java.util.ArrayList;
 import java.util.List;

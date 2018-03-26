@@ -1,6 +1,5 @@
 package business.service;
 
-import business.model.Seat;
 import business.model.Show;
 import business.model.Ticket;
 

@@ -2,7 +2,6 @@ package business.service;
 
 import business.model.Show;
 import business.model.Ticket;
-import dataaccess.repository.TicketRepositoryMySql;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

@@ -1,9 +1,5 @@
 package presentation;
 
-import business.model.User;
-import business.service.*;
-import dataaccess.repository.ShowRepositoryMySql;
-import dataaccess.repository.UserRepositoryMySql;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

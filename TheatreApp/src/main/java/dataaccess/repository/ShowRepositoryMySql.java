@@ -6,7 +6,6 @@ import dataaccess.dbmodel.ShowDTO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ShowRepositoryMySql implements ShowRepository {
 

@@ -1,7 +1,6 @@
 package business.service;
 
 import business.model.Show;
-import dataaccess.DBConnection;
 import dataaccess.dbmodel.ShowDTO;
 import dataaccess.repository.*;
 

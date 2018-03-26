@@ -1,14 +1,11 @@
 package dataaccess.repository;
 
 import dataaccess.DBConnection;
-import dataaccess.dbmodel.SeatDTO;
-import dataaccess.dbmodel.TicketDTO;
 import dataaccess.dbmodel.UserDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.UnaryOperator;
 
 public class UserRepositoryMySql implements UserRepository {
 

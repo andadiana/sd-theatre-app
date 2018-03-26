@@ -3,7 +3,6 @@ package business.service;
 import business.model.Seat;
 import dataaccess.dbmodel.SeatDTO;
 import dataaccess.repository.SeatRepository;
-import dataaccess.repository.SeatRepositoryMySql;
 
 import java.util.ArrayList;
 import java.util.List;
