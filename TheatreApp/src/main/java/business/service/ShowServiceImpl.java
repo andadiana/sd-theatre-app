@@ -34,10 +34,7 @@ public class ShowServiceImpl implements ShowService {
 
     public int create(Show show) {
         ShowDTO showDTO = showToDto(show);
-        int showId = repository.create(showDTO);
-        TicketService ticketService = new TicketServiceImpl(new TicketRepositoryCacheDecorator(new TicketRepositoryMySql()));
-        ticketService.createTicketsForShow(show);
-        return showId;
+        return repository.create(showDTO);
     }
 
     public boolean update(Show show) {

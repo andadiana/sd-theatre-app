@@ -43,9 +43,9 @@ public class ShowPane{
 
     public ShowPane() {
 
-        //TODO: implement search bar for shows (search by name)
-
         pane = new BorderPane();
+
+        //implement service provider so that presentation layer does not have dependency on data access layer
         showService = new ShowServiceImpl(new ShowRepositoryMySql());
 
         createShowTable();

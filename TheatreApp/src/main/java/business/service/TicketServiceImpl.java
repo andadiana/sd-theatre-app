@@ -14,6 +14,8 @@ public class TicketServiceImpl implements TicketService {
     private TicketRepository repository;
 
 
+    //TODO validate input in business layer too
+
     public TicketServiceImpl(TicketRepository repository) {
         this.repository = repository;
     }
@@ -48,30 +50,41 @@ public class TicketServiceImpl implements TicketService {
         return dtoToTicket(ticketDTO);
     }
 
-    public boolean editSeat(Ticket ticket, Seat newSeat) {
+    public boolean editSeat(Ticket ticket, int rowNr, int seatNr) {
         Show show = ticket.getShow();
-        ticket.setReserved(false);
-        Ticket newTicket = findSeatTicketForShow(show, newSeat.getRowNr(), newSeat.getSeatNr());
-        newTicket.setReserved(true);
-        TicketDTO newTicketDTO = ticketToDTO(newTicket);
-        TicketDTO ticketDTO = ticketToDTO(ticket);
-        repository.update(ticketDTO);
-        return repository.update(newTicketDTO);
+        SeatService seatService = new SeatServiceImpl(new SeatRepositoryMySql());
+        Seat newSeat = seatService.getByPosition(rowNr, seatNr);
+        //check if there that seat is occupied for the show
+        if (repository.findSeatTicketForShow(show.getId(), newSeat.getId()) == null) {
+            ticket.setSeat(newSeat);
+            TicketDTO ticketDTO = ticketToDTO(ticket);
+            return repository.update(ticketDTO);
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean cancelReservation(Ticket ticket) {
         TicketDTO ticketDTO = ticketToDTO(ticket);
-        ticketDTO.setReserved(false);
-        return repository.update(ticketDTO);
+        return repository.delete(ticketDTO);
     }
 
-    public boolean reserveTicket(Ticket ticket) {
+    public Ticket reserveTicket(Show show, int rowNr, int seatNr) {
+        SeatService seatService = new SeatServiceImpl(new SeatRepositoryMySql());
+        Seat reservedSeat = seatService.getByPosition(rowNr, seatNr);
+        Ticket ticket = new Ticket();
+        ticket.setShow(show);
+        ticket.setSeat(reservedSeat);
         ticket.setReserved(true);
         TicketDTO ticketDTO = ticketToDTO(ticket);
-        return repository.update(ticketDTO);
+        int id = repository.create(ticketDTO);
+        ticket.setId(id);
+        return ticket;
     }
 
     public List<Ticket> findSoldTicketsForShow(Show show) {
+        //TODO same as find all tickets for show?
         List<TicketDTO> ticketDTOS = repository.findSoldTicketsForShow(show.getId());
         List<Ticket> tickets = new ArrayList<>();
         for (TicketDTO ticket: ticketDTOS) {
@@ -81,6 +94,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     public boolean nrTicketsExceeded(Show show) {
+        //TODO call findalltickets for show instead of findsoldtickets?
         List<TicketDTO> soldTickets = repository.findSoldTicketsForShow(show.getId());
         if (soldTickets.size() >= show.getNrTickets()) {
             return true;
