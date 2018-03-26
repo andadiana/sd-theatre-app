@@ -1,9 +1,8 @@
 package presentation;
 
 import business.model.Show;
+import business.service.ServiceProvider;
 import business.service.ShowService;
-import business.service.ShowServiceImpl;
-import dataaccess.repository.ShowRepositoryMySql;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -45,8 +44,8 @@ public class ShowPane{
 
         pane = new BorderPane();
 
-        //implement service provider so that presentation layer does not have dependency on data access layer
-        showService = new ShowServiceImpl(new ShowRepositoryMySql());
+        ServiceProvider serviceProvider = new ServiceProvider();
+        showService = serviceProvider.getShowService();
 
         createShowTable();
 

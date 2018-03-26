@@ -17,7 +17,8 @@ public abstract class ExportService {
         String timeStr = dateFormat.format(currentTime);
         String filename = show.getTitle() + "_" + timeStr;
 
-        TicketService ticketService = new TicketServiceImpl(new TicketRepositoryMySql());
+        ServiceProvider serviceProvider = new ServiceProvider();
+        TicketService ticketService = serviceProvider.getTicketService();
         List<Ticket> ticketList = ticketService.findSoldTicketsForShow(show);
         return exporter.export(ticketList, filename);
     }

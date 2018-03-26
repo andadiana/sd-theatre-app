@@ -1,10 +1,7 @@
 package presentation;
 
 import business.model.User;
-import business.service.CashierService;
-import business.service.CashierServiceImpl;
-import business.service.ShowService;
-import business.service.ShowServiceImpl;
+import business.service.*;
 import dataaccess.repository.ShowRepositoryMySql;
 import dataaccess.repository.UserRepositoryMySql;
 import javafx.event.ActionEvent;
@@ -19,8 +16,10 @@ public class AdminView extends Scene {
     public AdminView(BorderPane pane) {
         super(pane, 1000, 600);
 
-        ShowService showService = new ShowServiceImpl(new ShowRepositoryMySql());
-        CashierService cashierService = new CashierServiceImpl(new UserRepositoryMySql());
+        ServiceProvider serviceProvider = new ServiceProvider();
+
+        ShowService showService = serviceProvider.getShowService();
+        CashierService cashierService = serviceProvider.getCashierService();
 
         Label label = new Label("ADMIN VIEW");
         pane.setTop(label);
@@ -73,6 +72,5 @@ public class AdminView extends Scene {
         pane.setCenter(centerPane);
 
         pane.setBottom(logout);
-
     }
 }

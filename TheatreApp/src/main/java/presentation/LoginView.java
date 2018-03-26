@@ -2,8 +2,7 @@ package presentation;
 
 import business.model.User.UserType;
 import business.service.LoginService;
-import business.service.LoginServiceImpl;
-import dataaccess.repository.UserRepositoryMySql;
+import business.service.ServiceProvider;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,7 +21,8 @@ public class LoginView extends Scene {
 
     public LoginView(BorderPane pane) {
         super(pane, 500, 400);
-        loginService = new LoginServiceImpl(new UserRepositoryMySql());
+        ServiceProvider serviceProvider = new ServiceProvider();
+        loginService = serviceProvider.getLoginService();
 
         Label title = new Label("Theatre Application");
         pane.setTop(title);

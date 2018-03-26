@@ -4,10 +4,6 @@ import business.model.Seat;
 import business.model.Show;
 import business.model.Ticket;
 import business.service.*;
-import dataaccess.repository.SeatRepositoryMySql;
-import dataaccess.repository.ShowRepositoryMySql;
-import dataaccess.repository.TicketRepositoryCacheDecorator;
-import dataaccess.repository.TicketRepositoryMySql;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,12 +29,10 @@ public class CashierView extends Scene {
     public CashierView(BorderPane pane) {
         super(pane, 1000, 600);
 
-        //TODO use module service to remove dependecies on data access layer
-        ShowService showService = new ShowServiceImpl(new ShowRepositoryMySql());
-        ticketService = new TicketServiceImpl(new TicketRepositoryCacheDecorator(new TicketRepositoryMySql()));
-        seatService = new SeatServiceImpl(new SeatRepositoryMySql());
-
-        Show selectedShow = null;
+        ServiceProvider serviceProvider = new ServiceProvider();
+        ShowService showService = serviceProvider.getShowService();
+        ticketService = serviceProvider.getTicketService();
+        seatService = serviceProvider.getSeatService();
 
         tickets = new Ticket[SeatService.THEATRE_ROWS + 1][SeatService.THEATRE_COLS + 1];
         seatLabels = new Label[SeatService.THEATRE_ROWS + 1][SeatService.THEATRE_COLS + 1];

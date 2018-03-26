@@ -12,18 +12,19 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
 
     private TicketRepository repository;
-
+    private ServiceProvider serviceProvider;
 
     //TODO validate input in business layer too
 
     public TicketServiceImpl(TicketRepository repository) {
         this.repository = repository;
+        this.serviceProvider = new ServiceProvider();
     }
 
     public void createTicketsForShow(Show show) {
         for (int i = 1; i <= SeatService.THEATRE_ROWS; i++) {
             for (int j = 1; j <= SeatService.THEATRE_COLS; j++) {
-                SeatService seatService = new SeatServiceImpl(new SeatRepositoryMySql());
+                SeatService seatService = serviceProvider.getSeatService();
                 Seat seat = seatService.getByPosition(i, j);
                 Ticket ticket = new Ticket();
                 ticket.setReserved(false);
@@ -44,7 +45,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     public Ticket findSeatTicketForShow(Show show, int rowNr, int seatNr) {
-        SeatService seatService = new SeatServiceImpl(new SeatRepositoryMySql());
+        SeatService seatService = serviceProvider.getSeatService();
         Seat seat = seatService.getByPosition(rowNr, seatNr);
         TicketDTO ticketDTO = repository.findSeatTicketForShow(show.getId(), seat.getId());
         return dtoToTicket(ticketDTO);
@@ -52,7 +53,7 @@ public class TicketServiceImpl implements TicketService {
 
     public boolean editSeat(Ticket ticket, int rowNr, int seatNr) {
         Show show = ticket.getShow();
-        SeatService seatService = new SeatServiceImpl(new SeatRepositoryMySql());
+        SeatService seatService = serviceProvider.getSeatService();
         Seat newSeat = seatService.getByPosition(rowNr, seatNr);
         //check if there that seat is occupied for the show
         if (repository.findSeatTicketForShow(show.getId(), newSeat.getId()) == null) {
@@ -71,7 +72,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     public Ticket reserveTicket(Show show, int rowNr, int seatNr) {
-        SeatService seatService = new SeatServiceImpl(new SeatRepositoryMySql());
+        SeatService seatService = serviceProvider.getSeatService();
         Seat reservedSeat = seatService.getByPosition(rowNr, seatNr);
         Ticket ticket = new Ticket();
         ticket.setShow(show);
@@ -109,9 +110,9 @@ public class TicketServiceImpl implements TicketService {
     private Ticket dtoToTicket(TicketDTO ticketDTO) {
         Ticket ticket = new Ticket();
         ticket.setId(ticketDTO.getId());
-        SeatService seatService = new SeatServiceImpl(new SeatRepositoryMySql());
+        SeatService seatService = serviceProvider.getSeatService();
         ticket.setSeat(seatService.getById(ticketDTO.getSeatId()));
-        ShowService showService = new ShowServiceImpl(new ShowRepositoryMySql());
+        ShowService showService = serviceProvider.getShowService();
         ticket.setShow(showService.getById(ticketDTO.getShowId()));
         ticket.setReserved(ticketDTO.getReserved());
         return ticket;

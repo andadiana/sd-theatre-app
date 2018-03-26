@@ -2,7 +2,6 @@ package presentation;
 
 import business.model.Show;
 import business.service.*;
-import dataaccess.repository.ShowRepositoryMySql;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,8 +23,6 @@ public class ExportPane {
     public ExportPane() {
         pane = new BorderPane();
 
-
-
         TextField titleField = new TextField();
         titleField.setPromptText("title");
         titleField.setEditable(false);
@@ -45,7 +42,8 @@ public class ExportPane {
         Label exportMessage = new Label();
 
         ComboBox<Show> showBox;
-        ShowService showService = new ShowServiceImpl(new ShowRepositoryMySql());
+        ServiceProvider serviceProvider = new ServiceProvider();
+        ShowService showService = serviceProvider.getShowService();
         List<Show> availableShows = showService.findAll();
         ObservableList<Show> showOptions =
                 FXCollections.observableArrayList(availableShows);

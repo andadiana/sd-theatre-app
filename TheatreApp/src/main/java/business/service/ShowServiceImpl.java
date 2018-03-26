@@ -13,9 +13,11 @@ import java.util.stream.Collectors;
 public class ShowServiceImpl implements ShowService {
 
     private ShowRepository repository;
+    private ServiceProvider serviceProvider;
 
     public ShowServiceImpl(ShowRepository showRepository) {
         this.repository = showRepository;
+        this.serviceProvider = new ServiceProvider();
     }
 
     public List<Show> findAll() {
@@ -45,7 +47,7 @@ public class ShowServiceImpl implements ShowService {
     public boolean delete(Show show) {
         ShowDTO showDTO = showToDto(show);
         //first, delete tickets for that show - otherwise, foreign key constraints fail
-        TicketService ticketService = new TicketServiceImpl(new TicketRepositoryMySql());
+        TicketService ticketService = serviceProvider.getTicketService();
         if (ticketService.deleteAllTicketsForShow(show)) {
             if (repository.delete(showDTO)) {
                 return true;
