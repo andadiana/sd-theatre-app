@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -43,13 +44,36 @@ public class ShowPane{
     public ShowPane() {
 
         pane = new BorderPane();
+        pane.setPadding(new Insets(10, 20, 10, 20));
 
         ServiceProvider serviceProvider = new ServiceProvider();
         showService = serviceProvider.getShowService();
 
         createShowTable();
 
+        titleField = new TextField();
+        titleField.setFocusTraversable(false);
+        titleField.setPromptText("title");
+
+        ObservableList<Show.Genre> genreOptions =
+                FXCollections.observableArrayList(Show.Genre.values());
+        genreBox = new ComboBox<>(genreOptions);
+
+
+        dateField = new TextField();
+        dateField.setFocusTraversable(false);
+        dateField.setPromptText("date");
+
+        castField = new TextArea();
+        castField.setFocusTraversable(false);
+        castField.setPromptText("cast");
+
+        nrTicketsField = new TextField();
+        nrTicketsField.setFocusTraversable(false);
+        nrTicketsField.setPromptText("number of tickets");
+
         showError = new Label();
+
         Button addShow = new Button("Add Show");
         addShow.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -117,23 +141,6 @@ public class ShowPane{
             }
         });
 
-        titleField = new TextField();
-        titleField.setFocusTraversable(false);
-
-        ObservableList<Show.Genre> genreOptions =
-                FXCollections.observableArrayList(Show.Genre.values());
-        genreBox = new ComboBox<>(genreOptions);
-
-
-        dateField = new TextField();
-        dateField.setFocusTraversable(false);
-
-        castField = new TextArea();
-        castField.setFocusTraversable(false);
-
-        nrTicketsField = new TextField();
-        nrTicketsField.setFocusTraversable(false);
-
         showTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -149,6 +156,7 @@ public class ShowPane{
         });
 
         VBox vbox = new VBox();
+        vbox.setSpacing(5);
         vbox.getChildren().addAll(addShow, titleField, genreBox, dateField,
                 castField, nrTicketsField, showError, updateShow, deleteShow);
         pane.setRight(vbox);
@@ -276,9 +284,12 @@ public class ShowPane{
             }
         });
 
+        vbox.setSpacing(6);
+        vbox.setPadding(new Insets(10, 20, 10, 20));
         vbox.getChildren().addAll(addTitle, addGenre, addDate,
                 addCast, addNrTickets, addError, add);
-        stage.setScene(new Scene(vbox, 200, 200));
+        stage.setScene(new Scene(vbox, 400, 400));
+        stage.setTitle("Add new show");
         stage.show();
     }
 }

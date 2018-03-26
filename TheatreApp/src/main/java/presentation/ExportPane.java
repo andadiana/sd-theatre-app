@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -22,6 +23,7 @@ public class ExportPane {
 
     public ExportPane() {
         pane = new BorderPane();
+        pane.setPadding(new Insets(10, 20, 10, 20));
 
         TextField titleField = new TextField();
         titleField.setPromptText("title");
@@ -101,6 +103,7 @@ public class ExportPane {
         });
 
         VBox vBox = new VBox();
+        vBox.setSpacing(6);
         vBox.getChildren().addAll(showBox, titleField, genreField, dateField,
                 castField, exportMessage, csvExport, xmlExport);
         pane.setCenter(vBox);

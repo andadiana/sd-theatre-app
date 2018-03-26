@@ -8,10 +8,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.sql.Timestamp;
@@ -26,8 +29,10 @@ public class CashierView extends Scene {
     private SeatService seatService;
     private int availableTickets;
 
+
     public CashierView(BorderPane pane) {
-        super(pane, 1000, 600);
+        super(pane, 1500, 800);
+        pane.setPadding(new Insets(10, 20, 10, 20));
 
         ServiceProvider serviceProvider = new ServiceProvider();
         ShowService showService = serviceProvider.getShowService();
@@ -38,35 +43,68 @@ public class CashierView extends Scene {
         seatLabels = new Label[SeatService.THEATRE_ROWS + 1][SeatService.THEATRE_COLS + 1];
 
         Label label = new Label("CASHIER VIEW");
+        label.setFont(Font.font("Verdana", FontWeight.NORMAL,16));
+        label.setStyle("-fx-text-fill: #187010");
         pane.setTop(label);
 
+        Label titleLabel = new Label("Title: ");
         TextField titleField = new TextField();
         titleField.setPromptText("title");
         titleField.setEditable(false);
+        HBox titleHBox = new HBox();
+        titleHBox.setSpacing(5);
+        titleHBox.getChildren().addAll(titleLabel, titleField);
 
+        Label genreLabel = new Label("Genre: ");
         TextField genreField = new TextField();
         genreField.setPromptText("genre");
         genreField.setEditable(false);
+        HBox genreHBox = new HBox();
+        genreHBox.setSpacing(5);
+        genreHBox.getChildren().addAll(genreLabel, genreField);
 
+        Label dateLabel = new Label("Date: ");
         TextField dateField = new TextField();
         dateField.setPromptText("date");
         dateField.setEditable(false);
+        HBox dateHBox = new HBox();
+        dateHBox.setSpacing(5);
+        dateHBox.getChildren().addAll(dateLabel, dateField);
 
-        TextField castField = new TextField();
+        Label castLabel = new Label("Cast: ");
+        TextArea castField = new TextArea();
         castField.setPromptText("cast");
         castField.setEditable(false);
+        VBox castVBox = new VBox();
+        castVBox.setSpacing(5);
+        castVBox.getChildren().addAll(castLabel, castField);
 
+        Label nrTicketsLabel = new Label("Number of tickets: ");
         TextField nrTicketsField = new TextField();
         nrTicketsField.setPromptText("number of tickets");
         nrTicketsField.setEditable(false);
+        HBox ticketsHBox = new HBox();
+        ticketsHBox.setSpacing(5);
+        ticketsHBox.getChildren().addAll(nrTicketsLabel, nrTicketsField);
 
         GridPane seatGrid = new GridPane();
+        seatGrid.setPadding(new Insets(10, 20, 10, 20));
+        seatGrid.setHgap(10);
+        //seatGrid.setVgap(10);
 
+        Label rowLabel = new Label("Row:");
         TextField rowField = new TextField();
         rowField.setEditable(false);
+        HBox rowHBox = new HBox();
+        rowHBox.setSpacing(5);
+        rowHBox.getChildren().addAll(rowLabel, rowField);
 
+        Label seatLabel = new Label("Seat:");
         TextField seatField = new TextField();
         seatField.setEditable(false);
+        HBox seatHBox = new HBox();
+        seatHBox.setSpacing(5);
+        seatHBox.getChildren().addAll(seatLabel, seatField);
 
         Label availableTicketLabel = new Label();
 
@@ -231,8 +269,10 @@ public class CashierView extends Scene {
 
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(showBox, titleField, genreField, dateField,
-                castField, nrTicketsField, seatGrid, rowField, seatField, availableTicketLabel, ticketError, reserveButton, cancelReservation, editSeat);
+        vBox.setSpacing(5);
+        vBox.getChildren().addAll(showBox, titleHBox, genreHBox, dateHBox, castVBox, ticketsHBox,
+                seatGrid, rowHBox, seatHBox, availableTicketLabel, ticketError, reserveButton,
+                cancelReservation, editSeat);
         pane.setCenter(vBox);
 
         pane.setBottom(logout);
@@ -241,6 +281,8 @@ public class CashierView extends Scene {
     private void editSeatScene(Ticket ticket) {
         Stage stage = new Stage();
         VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.setPadding(new Insets(10, 20, 10, 20));
 
         TextField editRowField = new TextField();
         editRowField.setPromptText("Row number");
@@ -282,6 +324,7 @@ public class CashierView extends Scene {
 
         vbox.getChildren().addAll(editRowField, editSeatField, editError, edit);
         stage.setScene(new Scene(vbox, 200, 200));
+        stage.setTitle("Edit seat");
         stage.show();
     }
 

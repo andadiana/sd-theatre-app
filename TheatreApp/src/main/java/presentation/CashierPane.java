@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -32,6 +33,7 @@ public class CashierPane {
 
     public CashierPane() {
         pane = new BorderPane();
+        pane.setPadding(new Insets(10, 20, 10, 20));
 
         ServiceProvider serviceProvider = new ServiceProvider();
         cashierService = serviceProvider.getCashierService();
@@ -116,6 +118,7 @@ public class CashierPane {
         });
 
         VBox vBox = new VBox();
+        vBox.setSpacing(5);
         vBox.getChildren().addAll(addCashier, usernameField, passwordField, cashierError, updateCashier, deleteCashier);
 
         pane.setRight(vBox);
@@ -196,8 +199,11 @@ public class CashierPane {
             }
         });
 
+        vbox.setSpacing(6);
+        vbox.setPadding(new Insets(10, 20, 10, 20));
         vbox.getChildren().addAll(addUsername, addPassword, addError, add);
-        stage.setScene(new Scene(vbox, 200, 200));
+        stage.setScene(new Scene(vbox, 400, 200));
+        stage.setTitle("Add new cashier");
         stage.show();
     }
 }

@@ -3,6 +3,7 @@ package presentation;
 import business.model.User.UserType;
 import business.service.LoginService;
 import business.service.ServiceProvider;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,6 +11,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+
 
 public class LoginView extends Scene {
 
@@ -21,10 +25,14 @@ public class LoginView extends Scene {
 
     public LoginView(BorderPane pane) {
         super(pane, 500, 400);
+        pane.setPadding(new Insets(10, 20, 10, 20));
+
         ServiceProvider serviceProvider = new ServiceProvider();
         loginService = serviceProvider.getLoginService();
 
         Label title = new Label("Theatre Application");
+        title.setFont(Font.font("Verdana", FontWeight.NORMAL,20));
+        title.setStyle("-fx-text-fill: #187010");
         pane.setTop(title);
 
         username = new TextField();
@@ -52,6 +60,7 @@ public class LoginView extends Scene {
             });
 
         VBox vBox = new VBox();
+        vBox.setSpacing(5);
         vBox.getChildren().addAll(username, password, errorMessage, loginButton);
         vBox.setSpacing(10);
         pane.setCenter(vBox);

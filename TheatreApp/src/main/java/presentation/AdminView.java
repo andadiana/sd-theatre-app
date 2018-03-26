@@ -6,22 +6,23 @@ import dataaccess.repository.ShowRepositoryMySql;
 import dataaccess.repository.UserRepositoryMySql;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class AdminView extends Scene {
 
     public AdminView(BorderPane pane) {
-        super(pane, 1000, 600);
-
-        ServiceProvider serviceProvider = new ServiceProvider();
-
-        ShowService showService = serviceProvider.getShowService();
-        CashierService cashierService = serviceProvider.getCashierService();
+        super(pane, 1500, 800);
+        pane.setPadding(new Insets(10, 20, 10, 20));
 
         Label label = new Label("ADMIN VIEW");
+        label.setFont(Font.font("Verdana", FontWeight.NORMAL,16));
+        label.setStyle("-fx-text-fill: #187010");
         pane.setTop(label);
 
         VBox selectionBox = new VBox();
@@ -65,11 +66,9 @@ public class AdminView extends Scene {
             }
         });
 
+        selectionBox.setSpacing(6);
         selectionBox.getChildren().addAll(showsSel, cashiersSel, exportSel);
         pane.setLeft(selectionBox);
-
-        BorderPane centerPane = new BorderPane();
-        pane.setCenter(centerPane);
 
         pane.setBottom(logout);
     }
