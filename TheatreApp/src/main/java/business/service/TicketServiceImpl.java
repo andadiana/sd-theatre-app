@@ -102,6 +102,10 @@ public class TicketServiceImpl implements TicketService {
         return false;
     }
 
+    public boolean deleteAllTicketsForShow(Show show) {
+        return repository.deleteAllTicketsForShow(show.getId());
+    }
+
     private Ticket dtoToTicket(TicketDTO ticketDTO) {
         Ticket ticket = new Ticket();
         ticket.setId(ticketDTO.getId());

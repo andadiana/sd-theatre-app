@@ -67,4 +67,9 @@ public class TicketRepositoryCacheDecorator implements TicketRepository {
         return ticketRepository.delete(ticket);
     }
 
+    public boolean deleteAllTicketsForShow(int showId) {
+        ticketCache.restoreCache();
+        return ticketRepository.deleteAllTicketsForShow(showId);
+    }
+
 }

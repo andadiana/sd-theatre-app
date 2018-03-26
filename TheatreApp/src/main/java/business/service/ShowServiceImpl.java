@@ -44,8 +44,14 @@ public class ShowServiceImpl implements ShowService {
 
     public boolean delete(Show show) {
         ShowDTO showDTO = showToDto(show);
-        //TODO: decide what to do with tickets
-        return repository.delete(showDTO);
+        //first, delete tickets for that show - otherwise, foreign key constraints fail
+        TicketService ticketService = new TicketServiceImpl(new TicketRepositoryMySql());
+        if (ticketService.deleteAllTicketsForShow(show)) {
+            if (repository.delete(showDTO)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Show> searchByTitle(String title) {

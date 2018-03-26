@@ -66,4 +66,9 @@ public class MockTicketRepositoryImpl implements TicketRepository {
     public List<TicketDTO> findSoldTicketsForShow(int showId) {
         return tickets.stream().filter(t -> t.getShowId() == showId && t.getReserved()).collect(Collectors.toList());
     }
+
+    public boolean deleteAllTicketsForShow(int showId) {
+        tickets =  tickets.stream().filter(t -> t.getShowId() != showId).collect(Collectors.toList());
+        return true;
+    }
 }

@@ -14,4 +14,5 @@ public interface TicketRepository {
     public boolean delete(TicketDTO ticket);
     public TicketDTO findSeatTicketForShow(int showId, int seatId);
     public List<TicketDTO> findSoldTicketsForShow(int showId);
+    public boolean deleteAllTicketsForShow(int showId);
 }

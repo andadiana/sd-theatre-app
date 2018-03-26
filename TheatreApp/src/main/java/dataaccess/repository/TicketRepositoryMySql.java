@@ -171,6 +171,22 @@ public class TicketRepositoryMySql implements TicketRepository{
         return tickets;
     }
 
+    public boolean deleteAllTicketsForShow(int showId) {
+        Connection connection = DBConnection.getConnection();
+        try {
+            String query = "DELETE FROM ticket WHERE show_id=?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, showId);
+            System.out.println(statement);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     private TicketDTO getTicketFromResultSet(ResultSet rs) throws SQLException {
         TicketDTO ticket = new TicketDTO();
         ticket.setId(rs.getInt("ticket_id"));

@@ -16,4 +16,5 @@ public interface TicketService {
     public Ticket reserveTicket(Show show, int rowNr, int seatNr);
     public boolean nrTicketsExceeded(Show show);
     public List<Ticket> findSoldTicketsForShow(Show show);
+    public boolean deleteAllTicketsForShow(Show show);
 }
