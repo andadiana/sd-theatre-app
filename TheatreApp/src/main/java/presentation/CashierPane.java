@@ -2,7 +2,7 @@ package presentation;
 
 import business.model.User;
 import business.service.CashierService;
-import business.service.ServiceProvider;
+import business.service.ServiceProviderImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,7 +35,7 @@ public class CashierPane {
         pane = new BorderPane();
         pane.setPadding(new Insets(10, 20, 10, 20));
 
-        ServiceProvider serviceProvider = new ServiceProvider();
+        ServiceProviderImpl serviceProvider = new ServiceProviderImpl();
         cashierService = serviceProvider.getCashierService();
 
         createCashierTable();

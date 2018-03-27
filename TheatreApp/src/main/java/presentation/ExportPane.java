@@ -44,7 +44,7 @@ public class ExportPane {
         Label exportMessage = new Label();
 
         ComboBox<Show> showBox;
-        ServiceProvider serviceProvider = new ServiceProvider();
+        ServiceProvider serviceProvider = new ServiceProviderImpl();
         ShowService showService = serviceProvider.getShowService();
         List<Show> availableShows = showService.findAll();
         ObservableList<Show> showOptions =

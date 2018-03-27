@@ -34,7 +34,7 @@ public class CashierView extends Scene {
         super(pane, 1500, 800);
         pane.setPadding(new Insets(10, 20, 10, 20));
 
-        ServiceProvider serviceProvider = new ServiceProvider();
+        ServiceProvider serviceProvider = new ServiceProviderImpl();
         ShowService showService = serviceProvider.getShowService();
         ticketService = serviceProvider.getTicketService();
         seatService = serviceProvider.getSeatService();

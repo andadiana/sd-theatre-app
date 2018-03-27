@@ -3,6 +3,7 @@ package presentation;
 import business.model.User.UserType;
 import business.service.LoginService;
 import business.service.ServiceProvider;
+import business.service.ServiceProviderImpl;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,7 +28,7 @@ public class LoginView extends Scene {
         super(pane, 500, 400);
         pane.setPadding(new Insets(10, 20, 10, 20));
 
-        ServiceProvider serviceProvider = new ServiceProvider();
+        ServiceProvider serviceProvider = new ServiceProviderImpl();
         loginService = serviceProvider.getLoginService();
 
         Label title = new Label("Theatre Application");

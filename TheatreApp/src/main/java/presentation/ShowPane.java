@@ -3,6 +3,7 @@ package presentation;
 import business.model.Show;
 import business.service.SeatService;
 import business.service.ServiceProvider;
+import business.service.ServiceProviderImpl;
 import business.service.ShowService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,7 +49,7 @@ public class ShowPane{
         pane = new BorderPane();
         pane.setPadding(new Insets(10, 20, 10, 20));
 
-        ServiceProvider serviceProvider = new ServiceProvider();
+        ServiceProvider serviceProvider = new ServiceProviderImpl();
         showService = serviceProvider.getShowService();
 
         createShowTable();

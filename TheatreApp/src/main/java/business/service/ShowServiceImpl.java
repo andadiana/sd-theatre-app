@@ -16,7 +16,7 @@ public class ShowServiceImpl implements ShowService {
 
     public ShowServiceImpl(ShowRepository showRepository) {
         this.repository = showRepository;
-        this.serviceProvider = new ServiceProvider();
+        this.serviceProvider = new ServiceProviderImpl();
     }
 
     public List<Show> findAll() {

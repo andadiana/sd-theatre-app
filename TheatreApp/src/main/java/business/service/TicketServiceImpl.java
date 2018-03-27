@@ -14,11 +14,9 @@ public class TicketServiceImpl implements TicketService {
     private TicketRepository repository;
     private ServiceProvider serviceProvider;
 
-    //TODO validate input in business layer too
-
-    public TicketServiceImpl(TicketRepository repository) {
+    public TicketServiceImpl(TicketRepository repository, ServiceProvider serviceProvider) {
         this.repository = repository;
-        this.serviceProvider = new ServiceProvider();
+        this.serviceProvider = serviceProvider;
     }
 
     public void createTicketsForShow(Show show) {
@@ -42,6 +40,11 @@ public class TicketServiceImpl implements TicketService {
             tickets.add(dtoToTicket(ticket));
         }
         return tickets;
+    }
+
+    public Ticket getById(int id) {
+        TicketDTO ticketDTO = repository.getById(id);
+        return dtoToTicket(ticketDTO);
     }
 
     public Ticket findSeatTicketForShow(Show show, int rowNr, int seatNr) {

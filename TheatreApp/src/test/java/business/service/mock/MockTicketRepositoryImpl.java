@@ -49,7 +49,8 @@ public class MockTicketRepositoryImpl implements TicketRepository {
     public boolean update(TicketDTO ticket) {
         TicketDTO t = getById(ticket.getId());
         if (t != null) {
-            t = ticket;
+            tickets.remove(t);
+            tickets.add(ticket);
             return true;
         }
         return false;
@@ -60,7 +61,7 @@ public class MockTicketRepositoryImpl implements TicketRepository {
     }
 
     public TicketDTO findSeatTicketForShow(int showId, int seatId) {
-        return tickets.stream().filter(t -> t.getShowId() == showId && t.getSeatId() == seatId).findFirst().get();
+        return tickets.stream().filter(t -> t.getShowId() == showId && t.getSeatId() == seatId).findFirst().orElse(null);
     }
 
     public List<TicketDTO> findSoldTicketsForShow(int showId) {

@@ -6,6 +6,18 @@ public class Seat {
     private int rowNr;
     private int seatNr;
 
+    public Seat() {
+        this.id = 0;
+        this.rowNr = 0;
+        this.seatNr = 0;
+    }
+
+    public Seat(int id, int rowNr, int seatNr) {
+        this.id = id;
+        this.rowNr = rowNr;
+        this.seatNr = seatNr;
+    }
+
     public int getId() {
         return id;
     }
