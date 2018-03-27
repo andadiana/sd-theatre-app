@@ -1,6 +1,7 @@
 package presentation;
 
 import business.model.Show;
+import business.service.SeatService;
 import business.service.ServiceProvider;
 import business.service.ShowService;
 import javafx.collections.FXCollections;
@@ -232,6 +233,11 @@ public class ShowPane{
             errorLabel.setText("Number of tickets must be an integer!");
             return false;
         }
+        int nrSeats = SeatService.THEATRE_COLS * SeatService.THEATRE_ROWS;
+        if (Integer.parseInt(nrTickets) > nrSeats){
+            errorLabel.setText("Number of tickets cannot exceed number of seats in theatre (" + nrSeats + ")!");
+            return  false;
+        }
         return true;
     }
 
@@ -299,7 +305,7 @@ public class ShowPane{
         vbox.setPadding(new Insets(10, 20, 10, 20));
         vbox.getChildren().addAll(addTitle, addGenre, addDate,
                 addCast, addNrTickets, addError, add);
-        stage.setScene(new Scene(vbox, 400, 400));
+        stage.setScene(new Scene(vbox, 500, 400));
         stage.setTitle("Add new show");
         stage.show();
     }
