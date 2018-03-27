@@ -33,16 +33,36 @@ public class CashierServiceImpl implements CashierService {
     }
 
     public int createCashier(User user) {
+        //check if username already exists
+        UserDTO userDTO = repository.getByUsername(user.getUsername());
+        if (userDTO != null) {
+            return 0;
+        }
         String encryptedPass = encryptPassword(user.getPassword());
         user.setPassword(encryptedPass);
-        UserDTO userDTO = userToDTO(user);
+        userDTO = userToDTO(user);
         return repository.create(userDTO);
     }
 
-    public boolean updateCashier(User user) {
+    public boolean updateUsername(User user) {
+        //check if username already exists
+        UserDTO userDTO = repository.getByUsername(user.getUsername());
+        if (userDTO != null) {
+            return false;
+        }
+        userDTO = userToDTO(user);
+        return repository.update(userDTO);
+    }
+
+    public boolean updatePassword(User user) {
+        //check if username already exists
+        UserDTO userDTO = repository.getByUsername(user.getUsername());
+        if (userDTO != null) {
+            return false;
+        }
         String encryptedPass = encryptPassword(user.getPassword());
         user.setPassword(encryptedPass);
-        UserDTO userDTO = userToDTO(user);
+        userDTO = userToDTO(user);
         return repository.update(userDTO);
     }
 

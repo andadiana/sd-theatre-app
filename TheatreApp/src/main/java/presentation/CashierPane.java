@@ -53,21 +53,9 @@ public class CashierPane {
         updateCashier.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if (cashierTable.getSelectionModel().getSelectedItem() != null) {
-                    if (validCashierInput(usernameField.getText(), passwordField.getText(), cashierError)) {
-                        User cashier = cashierTable.getSelectionModel().getSelectedItem();
-                        cashier.setUsername(usernameField.getText());
-                        cashier.setPassword(passwordField.getText());
-
-                        System.out.println("Updating " + cashier);
-                        if (cashierService.updateCashier(cashier)) {
-                            System.out.println("Successful update for cashier");
-                            populateCashierTable();
-                            cashierError.setText("");
-                        } else {
-                            cashierError.setText("Unsuccessful update operation");
-                        }
-                    }
+                User selectedCashier = cashierTable.getSelectionModel().getSelectedItem();
+                if (selectedCashier != null) {
+                    updateCashierScene(selectedCashier);
                 }
                 else {
                     cashierError.setText("Please select cashier from table!");
@@ -204,6 +192,60 @@ public class CashierPane {
         vbox.getChildren().addAll(addUsername, addPassword, addError, add);
         stage.setScene(new Scene(vbox, 400, 200));
         stage.setTitle("Add new cashier");
+        stage.show();
+    }
+
+    private void updateCashierScene(User selectedCashier) {
+        Stage stage = new Stage();
+        VBox vbox = new VBox();
+
+        TextField updateUsername = new TextField();
+        updateUsername.setText(selectedCashier.getUsername());
+        updateUsername.setFocusTraversable(false);
+
+        TextField updatePassword = new TextField();
+        updatePassword.setText(selectedCashier.getPassword());
+        updatePassword.setFocusTraversable(false);
+
+        Label updateError = new Label();
+
+        Button update = new Button("Update");
+        update.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (validCashierInput(updateUsername.getText(), updatePassword.getText(), updateError)) {
+                    boolean success = false;
+                    if (selectedCashier.getPassword().equals(updatePassword.getText())) {
+                        //password unchanged
+                        selectedCashier.setUsername(updateUsername.getText());
+                        success = cashierService.updateUsername(selectedCashier);
+                        System.out.println("Updating username " + selectedCashier);
+                    }
+                    else {
+                        //password updated
+                        selectedCashier.setUsername(updateUsername.getText());
+                        selectedCashier.setPassword(updatePassword.getText());
+                        success = cashierService.updatePassword(selectedCashier);
+                        System.out.println("Updating password too " + selectedCashier);
+                    }
+                    if (success) {
+                        System.out.println("Successful update for cashier");
+                        populateCashierTable();
+                        updateError.setText("");
+                        stage.close();
+                    }
+                    else {
+                        updateError.setText("Unsuccessful update operation");
+                    }
+                }
+            }
+        });
+
+        vbox.setSpacing(6);
+        vbox.setPadding(new Insets(10, 20, 10, 20));
+        vbox.getChildren().addAll(updateUsername, updatePassword, updateError, update);
+        stage.setScene(new Scene(vbox, 400, 200));
+        stage.setTitle("Update cashier");
         stage.show();
     }
 }
