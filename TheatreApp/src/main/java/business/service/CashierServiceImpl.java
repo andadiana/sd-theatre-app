@@ -56,9 +56,12 @@ public class CashierServiceImpl implements CashierService {
 
     public boolean updatePassword(User user) {
         //check if username already exists
-        UserDTO userDTO = repository.getByUsername(user.getUsername());
-        if (userDTO != null) {
-            return false;
+        UserDTO userDTO = repository.getById(user.getId());
+        if (!userDTO.getUsername().equals(user.getUsername())) {
+            //changed username and password too
+            if (!updateUsername(user)) {
+                return false;
+            }
         }
         String encryptedPass = encryptPassword(user.getPassword());
         user.setPassword(encryptedPass);

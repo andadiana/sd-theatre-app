@@ -226,6 +226,7 @@ public class CashierPane {
                         selectedCashier.setUsername(updateUsername.getText());
                         selectedCashier.setPassword(updatePassword.getText());
                         success = cashierService.updatePassword(selectedCashier);
+                        System.out.println("success?: " + success);
                         System.out.println("Updating password too " + selectedCashier);
                     }
                     if (success) {
